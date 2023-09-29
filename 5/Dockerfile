@@ -28,6 +28,7 @@ RUN groupadd --system --gid 1000 scanner-cli && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_MAJOR}.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get -qqy update && \
     apt-get --no-install-recommends -qqy install git unzip wget bash fonts-dejavu python3 python3-pip shellcheck nodejs build-essential && \
+    apt-get upgrade -y && \
     curl -fsSL -o /opt/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip && \
     curl -fsSL -o /opt/sonar-scanner-cli.zip.asc https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip.asc && \
     for server in $(shuf -e hkps://keys.openpgp.org \
@@ -40,6 +41,7 @@ RUN groupadd --system --gid 1000 scanner-cli && \
     mv sonar-scanner-${SONAR_SCANNER_VERSION} ${SONAR_SCANNER_HOME} && \
     pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir pylint && \
+    pip install --no-cache-dir ansible_lint && \
     mkdir -p "${SRC_PATH}" "${SONAR_USER_HOME}" "${SONAR_USER_HOME}/cache" && \
     chmod -R 555 "${SONAR_SCANNER_HOME}" "${SRC_PATH}" && \
     chmod -R 777 "${SRC_PATH}" "${SONAR_USER_HOME}" && \
